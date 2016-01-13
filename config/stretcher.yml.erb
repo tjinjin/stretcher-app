@@ -1,0 +1,16 @@
+default: &default
+  pre:
+    -
+  success:
+    -
+  failure:
+    - cat >> /tmp/failure
+www:
+  <<: *default
+  post:
+    - ln -nfs <%= fetch(:deploy_to) %>/shared/data <%= fetch(:deploy_to) %>/current/data
+    - sudo systemctl reload unicorn
+batch:
+  <<: *default
+  post:
+    - ln -nfs <%= fetch(:deploy_to) %>/shared/data <%= fetch(:deploy_to) %>/current/data

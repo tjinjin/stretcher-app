@@ -5,7 +5,7 @@ default: &default
     -
   failure:
     - cat >> /tmp/failure
-www:
+web:
   <<: *default
   post:
     - ln -nfs <%= fetch(:deploy_to) %>/shared/data <%= fetch(:deploy_to) %>/current/data

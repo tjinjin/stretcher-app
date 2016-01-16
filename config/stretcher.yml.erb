@@ -10,3 +10,5 @@ web:
   post:
     - ln -nfs <%= fetch(:deploy_to) %>/shared/data <%= fetch(:deploy_to) %>/current/data
     - sudo systemctl reload unicorn || sudo systemctl start unicorn
+    - bundle exec rake db:create
+    - bundle exec rake db:migrate

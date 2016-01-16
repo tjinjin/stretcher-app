@@ -1,4 +1,4 @@
-rails_root = '/var/www/my_app_name'
+rails_root = '/var/www'
 
 ENV['BUNDLE_GEMFILE'] = rails_root + "current/Gemfile"
 

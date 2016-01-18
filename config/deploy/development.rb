@@ -9,5 +9,6 @@ set :ssh_options, {
    auth_methods: %w(publickey)
 }
 
-role %w(web db), "192.168.34.40"
-
+role %w(master web db), "192.168.34.42"
+role %w(master web db), "192.168.34.43"
+role %w(master web db), "192.168.34.44"

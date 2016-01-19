@@ -9,7 +9,7 @@ web:
   <<: *default
   post:
     - ln -nfs <%= fetch(:deploy_to) %>/shared/data <%= fetch(:deploy_to) %>/current/data
-    - sudo chown app. /var/www/current/ -R
-    - sudo systemctl reload unicorn || sudo systemctl start unicorn
+    - chown app. <%= fetch(:deploy_to) %>/current/ -R
+    - systemctl reload unicorn || systemctl start unicorn
     - bundle exec rake db:create
     - bundle exec rake db:migrate

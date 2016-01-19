@@ -1,6 +1,6 @@
 role :build, ['192.168.34.42'], :no_release => true
-set :application, 'my_app_name'
-set :deploy_to, '/var/www'
+set :application, 'stretcher_app'
+set :deploy_to, '/var/www/stretcher_app'
 set :deploy_roles, 'web'
 set :stretcher_hooks, 'config/stretcher.yml.erb'
 set :local_tarball_name, 'rails-applicaiton.tar.gz'

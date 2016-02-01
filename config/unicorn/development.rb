@@ -1,6 +1,6 @@
 rails_root = '/var/www/stretcher_app'
 
-ENV['BUNDLE_GEMFILE'] = rails_root + "/current/Gemfile"
+ENV['BUNDLE_GEMFILE'] = "#{rails_root}/current/Gemfile"
 
 worker_processes 2
 working_directory "#{rails_root}/current"

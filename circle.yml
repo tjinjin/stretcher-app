@@ -1,0 +1,17 @@
+machine:
+  timezone:
+    Asia/Tokyo
+  ruby:
+    version: 2.2.3
+
+dependencies:
+  pre:
+    - sudo pip install awscli
+  post:
+    - touch application-`date +"%Y-%m%d-%I-%M-%S"` && mv application-* $CIRCLE_ARTIFACTS
+
+deployment:
+  master:
+    branch: master
+    commands:
+      - sh script/upload-s3.sh

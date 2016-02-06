@@ -1,0 +1,18 @@
+machine:
+  timezone:
+    Asia/Tokyo
+  ruby:
+    version: 2.2.3
+
+dependencies:
+  pre:
+    - sudo pip install awscli
+  post:
+    - touch application-`date +"%Y-%m%d-%I-%M-%S"`
+
+deployment:
+  production:
+    branch: master
+    commands:
+      - sh script/upload-s3.sh:
+        timeout: 1500

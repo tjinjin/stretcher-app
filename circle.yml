@@ -11,8 +11,7 @@ dependencies:
     - touch application-`date +"%Y-%m%d-%I-%M-%S"` && mv application-* $CIRCLE_ARTIFACTS
 
 deployment:
-  production:
+  master:
     branch: master
     commands:
-      - sh script/upload-s3.sh:
-        timeout: 1500
+      - sh script/upload-s3.sh

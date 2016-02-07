@@ -29,7 +29,7 @@ namespace :stretcher do
   end
 
   def time_now
-    time_now = Time.now.strftime("%Y%m%d%H%M%S")
+    @time_now ||= Time.now.strftime("%Y%m%d%H%M%S")
   end
 
   def branch

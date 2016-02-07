@@ -90,10 +90,10 @@ namespace :stretcher do
   task :bundle do
     Bundler.with_clean_env do
       sh <<-EOC
-        RAILS_ENV="#{rails_env}" bundle install \
+        bundle install \
         --gemfile #{local_build_path}/Gemfile \
         --deployment --path vendor/bundle -j 4 \
-        --without development test
+        --without development test RAILS_ENV="#{rails_env}"
       EOC
     end
   end

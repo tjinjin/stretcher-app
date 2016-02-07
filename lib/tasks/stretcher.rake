@@ -33,7 +33,7 @@ namespace :stretcher do
   end
 
   def branch
-    'master'
+    'add-raketask'
   end
 
   def current_version
@@ -56,6 +56,22 @@ namespace :stretcher do
     "s3://tjinjin-backend-stretcher/assets/rails-application-#{time_now}.tgz"
   end
 
+  def checksum
+    sh "openssl sha256 #{local_tarball_path}/current/#{local_tarball_name} | awk -F' ' '{print $2}'".chomp
+  end
+
+  def deploy_to
+    "/var/www/stretcher-app"
+  end
+
+  def deploy_roles
+    %w(web batch)
+  end
+
+
+  def tempfile_path
+    "#{local_working_path_base}/tmp"
+  end
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -71,7 +87,8 @@ namespace :stretcher do
           #{local_repo_path} \
           #{local_checkout_path} \
           #{local_build_path} \
-          #{local_tarball_path}
+          #{local_tarball_path} \
+          #{tempfile_path}
     )
   end
 
@@ -131,13 +148,26 @@ namespace :stretcher do
 
   desc "upload tarball to s3"
   task :upload_tarball do
-    sh <<-EOC
-      aws s3 cp #{local_tarball_path}/current/#{local_tarball_name} #{stretcher_src}
-    EOC
+#    sh <<-EOC
+#      aws s3 cp #{local_tarball_path}/current/#{local_tarball_name} #{stretcher_src}
+#    EOC
   end
 
   desc "create and upload manifest"
   task :create_and_upload_manifest do
-    'manifest'
+    template = File.read(File.expand_path('../../templates/manifest.yml.erb', __FILE__))
+    yaml = YAML.load(ERB.new(%x(cat #{local_build_path}/config/stretcher2.yml.erb)).result(binding))
+    deploy_roles.each do |role|
+      hooks = yaml[role]
+      yml = ERB.new(template).result(binding)
+      tempfile_path = Tempfile.open("manifest_#{role}_#{time_now}") do |t|
+        t.write yml
+        t.path
+      end
+      p tempfile_path
+      sh <<-EOC
+       mv  #{tempfile_path} "#{local_tarball_path}/current/manifest_#{role}_#{rails_env}_#{time_now}.yml"
+      EOC
+    end
   end
 end

@@ -14,7 +14,14 @@ namespace :stretcher do
 
   desc "ensure directories"
   task :ensure_directories do
-    puts 'ensure'
+    %w(
+      /var/tmp/application/repo
+      /var/tmp/application/checkout
+      /var/tmp/application/build
+      /var/tmp/application/tarballs
+    ).each do |dir|
+      %x(mkdir -p #{dir})
+    end
   end
 
   desc "checkout repository"

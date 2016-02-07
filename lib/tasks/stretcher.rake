@@ -100,7 +100,10 @@ namespace :stretcher do
 
   desc "assets precompile"
   task :assets_precompile do
-    puts 'precompile'
+    sh <<-EOC
+      cd #{local_build_path}
+      bundle exec rake assets:precompile RAILS_ENV="#{rails_env}"
+    EOC
   end
 
   desc "create tarball"

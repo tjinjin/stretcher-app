@@ -48,6 +48,14 @@ namespace :stretcher do
     ENV['RAILS_ENV'] ||= 'development'
   end
 
+  def local_tarball_name
+    'application.tgz'
+  end
+
+  def stretcher_src
+    "s3://tjinjin-backend-stretcher/assets/rails-application-#{time_now}.tgz"
+  end
+
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -120,7 +128,9 @@ namespace :stretcher do
 
   desc "upload tarball to s3"
   task :upload_tarball do
-    puts 'upload'
+    sh <<-EOC
+      aws s3 cp #{local_tarball_path}/current/#{local_tarball_name} #{stretcher_src}
+    EOC
   end
 
   desc "create and upload manifest"

@@ -53,7 +53,7 @@ namespace :stretcher do
   end
 
   def stretcher_src
-    "s3://tjinjin-backend-stretcher/assets/rails-application-#{time_now}.tgz"
+    "s3://tjinjin-upload-cirlcleci/assets/rails-application-#{time_now}.tgz"
   end
 
   def checksum
@@ -73,7 +73,7 @@ namespace :stretcher do
   end
 
   def manifest_path
-    "s3://tjinjin-backend-stretcher/manifests"
+    "s3://tjinjin-upload-cirlcleci/manifests"
   end
 
   def stretcher_hook

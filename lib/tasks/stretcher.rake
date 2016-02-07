@@ -24,6 +24,26 @@ namespace :stretcher do
     "#{local_working_path_base}/tarballs"
   end
 
+  def repo_url
+    "https://github.com/tjinjin/stretcher-app"
+  end
+
+  def time_now
+    time_now = Time.now.strftime("%Y%m%d%H%M%S")
+  end
+
+  def branch
+    'master'
+  end
+
+  def current_version
+    %x(git rev-parse #{branch}).chomp
+  end
+
+  def exclude_dirs
+    '--exclude tmp'
+  end
+
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -45,7 +65,21 @@ namespace :stretcher do
 
   desc "checkout repository"
   task :checkout_local do
-    puts 'checkout'
+    if File.exist?("#{local_repo_path}/HEAD")
+      %x(git remote update)
+    else
+      %x(git clone --mirror #{repo_url} #{local_repo_path})
+    end
+    %x(
+      mkdir -p #{local_checkout_path}/#{time_now}
+      git archive #{branch} | tar -x -C #{local_checkout_path}/#{time_now}
+      echo #{current_version} > #{local_checkout_path}/#{time_now}/REVISION
+    )
+
+    %x(
+      rsync -av --delete #{exclude_dirs} \
+          #{local_checkout_path}/#{time_now} #{local_build_path}
+    )
   end
 
   desc "bundle install"

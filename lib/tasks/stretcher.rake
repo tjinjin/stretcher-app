@@ -4,6 +4,26 @@ require 'yaml'
 
 namespace :stretcher do
 
+  def local_working_path_base
+    '/var/tmp/application'
+  end
+
+  def local_repo_path
+    "#{local_working_path_base}/repo"
+  end
+
+  def local_checkout_path
+    "#{local_working_path_base}/checkout"
+  end
+
+  def local_build_path
+    "#{local_working_path_base}/build"
+  end
+
+  def local_tarball_path
+    "#{local_working_path_base}/tarballs"
+  end
+
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -14,14 +34,10 @@ namespace :stretcher do
 
   desc "ensure directories"
   task :ensure_directories do
-    %w(
-      /var/tmp/application/repo
-      /var/tmp/application/checkout
-      /var/tmp/application/build
-      /var/tmp/application/tarballs
-    ).each do |dir|
-      %x(mkdir -p #{dir})
-    end
+    sh "mkdir -p #{local_repo_path}"
+    sh "mkdir -p #{local_checkout_path}"
+    sh "mkdir -p #{local_build_path}"
+    sh "mkdir -p #{local_tarball_path}"
   end
 
   desc "checkout repository"

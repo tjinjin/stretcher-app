@@ -44,6 +44,10 @@ namespace :stretcher do
     '--exclude tmp'
   end
 
+  def rails_env
+    ENV['RAILS_ENV'] ||= 'development'
+  end
+
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -78,13 +82,20 @@ namespace :stretcher do
 
     %x(
       rsync -av --delete #{exclude_dirs} \
-          #{local_checkout_path}/#{time_now} #{local_build_path}
+          #{local_checkout_path}/#{time_now}/ #{local_build_path}/
     )
   end
 
   desc "bundle install"
   task :bundle do
-    puts 'bundle'
+    Bundler.with_clean_env do
+      sh <<-EOC
+        RAILS_ENV="#{rails_env}" bundle install \
+        --gemfile #{local_build_path}/Gemfile \
+        --deployment --path vendor/bundle -j 4 \
+        --without development test
+      EOC
+    end
   end
 
   desc "assets precompile"

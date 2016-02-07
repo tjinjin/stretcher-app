@@ -34,10 +34,13 @@ namespace :stretcher do
 
   desc "ensure directories"
   task :ensure_directories do
-    sh "mkdir -p #{local_repo_path}"
-    sh "mkdir -p #{local_checkout_path}"
-    sh "mkdir -p #{local_build_path}"
-    sh "mkdir -p #{local_tarball_path}"
+    %x(
+      mkdir -p \
+          #{local_repo_path} \
+          #{local_checkout_path} \
+          #{local_build_path} \
+          #{local_tarball_path}
+    )
   end
 
   desc "checkout repository"

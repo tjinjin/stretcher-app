@@ -8,10 +8,10 @@ dependencies:
   pre:
     - sudo pip install awscli
   post:
-    - touch application-`date +"%Y-%m%d-%I-%M-%S"` && mv application-* $CIRCLE_ARTIFACTS
+    - bundle exec rake stretcher:archive_project
 
 deployment:
   master:
     branch: master
     commands:
-      - sh script/upload-s3.sh
+      - bundle exec rake stretcher:archive_project

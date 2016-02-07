@@ -1,0 +1,23 @@
+src: <%= stretcher_src %>
+checksum: <%= checksum %>
+dest: <%= deploy_to %>/releases/<%= time_now %>
+commands:
+  pre:
+    <% hooks["pre"].each do |c| %>
+     - <%= c %>
+    <% end %>
+  post:
+    <% hooks["post"].each do |c| %>
+     - <%= c %>
+    <% end %>
+  success:
+    <% hooks["success"].each do |c| %>
+     - <%= c %>
+    <% end %>
+  failure:
+    <% hooks["failure"].each do |c| %>
+     - <%= c %>
+    <% end %>
+excludes:
+  - "*.pid"
+  - "*.socket"

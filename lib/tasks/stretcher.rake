@@ -121,6 +121,9 @@ namespace :stretcher do
       mkdir -p "#{local_tarball_path}/#{time_now}"
       tar -cf - --exclude tmp --exclude spec ./ | gzip -9 > \
         #{local_tarball_path}/#{time_now}/#{local_tarball_name}
+    EOC
+    sh <<-EOC
+      cd #{local_tarball_path}
       rm -f current
       ln -sf #{time_now} current
     EOC

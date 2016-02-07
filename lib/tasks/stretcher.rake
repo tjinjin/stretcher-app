@@ -108,7 +108,14 @@ namespace :stretcher do
 
   desc "create tarball"
   task :create_tarball do
-    puts 'tarball'
+    sh <<-EOC
+      cd #{local_tarball_path}
+      mkdir -p "#{local_tarball_path}/#{time_now}"
+      tar -cf - --exclude tmp --exclude spec ./ | gzip -9 > \
+        #{local_tarball_path}/#{time_now}/#{local_tarball_name}
+      rm -f current
+      ln -sf #{time_now} current
+    EOC
   end
 
   desc "upload tarball to s3"

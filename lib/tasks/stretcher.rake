@@ -65,13 +65,21 @@ namespace :stretcher do
   end
 
   def deploy_roles
-    %w(web batch)
+    %w(web)
   end
-
 
   def tempfile_path
     "#{local_working_path_base}/tmp"
   end
+
+  def manifest_path
+    "s3://tjinjin-backend-stretcher/manifests"
+  end
+
+  def stretcher_hook
+    "stretcher2.yml.erb"
+  end
+
   desc "Create tarball"
   task :archive_project =>
   [:ensure_directories, :checkout_local,
@@ -148,15 +156,15 @@ namespace :stretcher do
 
   desc "upload tarball to s3"
   task :upload_tarball do
-#    sh <<-EOC
-#      aws s3 cp #{local_tarball_path}/current/#{local_tarball_name} #{stretcher_src}
-#    EOC
+    sh <<-EOC
+      aws s3 cp #{local_tarball_path}/current/#{local_tarball_name} #{stretcher_src}
+    EOC
   end
 
   desc "create and upload manifest"
   task :create_and_upload_manifest do
     template = File.read(File.expand_path('../../templates/manifest.yml.erb', __FILE__))
-    yaml = YAML.load(ERB.new(%x(cat #{local_build_path}/config/stretcher2.yml.erb)).result(binding))
+    yaml = YAML.load(ERB.new(%x(cat #{local_build_path}/config/#{stretcher_hook})).result(binding))
     deploy_roles.each do |role|
       hooks = yaml[role]
       yml = ERB.new(template).result(binding)
@@ -167,6 +175,9 @@ namespace :stretcher do
       p tempfile_path
       sh <<-EOC
        mv  #{tempfile_path} "#{local_tarball_path}/current/manifest_#{role}_#{rails_env}_#{time_now}.yml"
+      EOC
+      sh <<-EOC
+        aws s3 cp "#{local_tarball_path}/current/manifest_#{role}_#{rails_env}_#{time_now}.yml" "#{manifest_path}/manifest_#{role}_#{rails_env}_#{time_now}.yml"
       EOC
     end
   end

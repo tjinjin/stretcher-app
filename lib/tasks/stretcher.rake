@@ -191,9 +191,10 @@ namespace :stretcher do
   task :kick_start do
     deploy_roles.each do |role|
       o, e, s = Open3.capture3("aws s3 ls #{manifest_path}/manifest_#{role}_#{rails_env} | awk -F' ' '{print $4}' | tail -1")
-      puts "kick start -> #{o}"
+      current_manifest = o.chomp
+      puts "kick start -> #{current_manifest}"
       sh <<-EOC
-        curl -X PUT -d "#{manifest_path}/#{o}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
+        curl -X PUT -d "#{manifest_path}/#{current_manifest}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
       EOC
     end
   end
@@ -202,9 +203,10 @@ namespace :stretcher do
   task :rollback do
     deploy_roles.each do |role|
       o, e, s = Open3.capture3("aws s3 ls #{manifest_path}/manifest_#{role}_#{rails_env} | awk -F' ' '{print $4}' | tail -2 | head -1")
-      puts "kick start -> #{o}"
+      current_manifest = o.chomp
+      puts "kick start -> #{current_manifest}"
       sh <<-EOC
-        curl -X PUT -d "#{manifest_path}/#{o}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
+        curl -X PUT -d "#{manifest_path}/#{current_manifest}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
       EOC
     end
   end

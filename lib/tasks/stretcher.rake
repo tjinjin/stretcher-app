@@ -58,7 +58,7 @@ namespace :stretcher do
   end
 
   def checksum
-    sh "openssl sha256 #{local_tarball_path}/current/#{local_tarball_name} | awk -F' ' '{print $2}'".chomp
+    %x(openssl sha256 #{local_tarball_path}/current/#{local_tarball_name} | awk -F' ' '{print $2}').chomp
   end
 
   def deploy_to

@@ -33,7 +33,7 @@ namespace :stretcher do
   end
 
   def branch
-    'add-raketask'
+    ENV['CIRCLE_BRANCH'] ||= 'master'
   end
 
   def current_version
@@ -65,7 +65,7 @@ namespace :stretcher do
   end
 
   def deploy_roles
-    %w(web)
+    %w(web batch)
   end
 
   def tempfile_path

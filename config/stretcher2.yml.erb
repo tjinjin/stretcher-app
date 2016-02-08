@@ -13,3 +13,9 @@ web:
     - systemctl reload unicorn || systemctl start unicorn
     - bundle exec rake db:create
     - bundle exec rake db:migrate
+batch:
+  <<: *default
+  post:
+    - ln -nfs <%= deploy_to %>/shared/data <%= deploy_to %>/current/data
+    - chown app. <%= deploy_to %>/current/ -R
+    - systemctl reload sidekiq || systemctl start sidekiq

@@ -33,7 +33,7 @@ namespace :stretcher do
   end
 
   def branch
-    'add-raketask'
+    ENV['CIRCLE_BRANCH'] ||= 'master'
   end
 
   def current_version

@@ -1,6 +1,7 @@
 # -*- coding: utf-8; mode: ruby -*-
 require 'erb'
 require 'yaml'
+require 'open3'
 
 namespace :stretcher do
 
@@ -78,6 +79,10 @@ namespace :stretcher do
 
   def stretcher_hook
     "stretcher2.yml.erb"
+  end
+
+  def consul_host
+    "192.168.34.42"
   end
 
   desc "Create tarball"
@@ -180,5 +185,27 @@ namespace :stretcher do
         aws s3 cp "#{local_tarball_path}/current/manifest_#{role}_#{rails_env}_#{time_now}.yml" "#{manifest_path}/manifest_#{role}_#{rails_env}_#{time_now}.yml"
       EOC
     end
+  end
+
+  desc "kick start consul event"
+  task :kick_start do
+    deploy_roles.each do |role|
+      o, e, s = Open3.capture3("aws s3 ls #{manifest_path}/manifest_#{role}_#{rails_env} | awk -F' ' '{print $4}' | tail -1")
+      puts "kick start -> #{o}"
+      sh <<-EOC
+        curl -X PUT -d "#{manifest_path}/manifest_#{role}_#{rails_env}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
+      EOC
+    end
+  end
+
+  desc "rollback consul event"
+  task :rollback do
+    deploy_roles.each do |role|
+      o, e, s = Open3.capture3("aws s3 ls #{manifest_path}/manifest_#{role}_#{rails_env} | awk -F' ' '{print $4}' | tail -2 | head -1")
+      puts "kick start -> #{o}"
+      sh <<-EOC
+        curl -X PUT -d "#{manifest_path}/manifest_#{role}_#{rails_env}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
+      EOC
+
   end
 end

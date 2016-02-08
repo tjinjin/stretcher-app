@@ -206,6 +206,6 @@ namespace :stretcher do
       sh <<-EOC
         curl -X PUT -d "#{manifest_path}/manifest_#{role}_#{rails_env}" http://#{consul_host}:8500/v1/event/fire/deploy_#{role}_#{rails_env}\?pretty
       EOC
-
+    end
   end
 end

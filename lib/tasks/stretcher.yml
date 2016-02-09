@@ -1,0 +1,15 @@
+local_working_path_base: /var/tmp/application
+repo_url: https://github.com/tjinjin/stretcher-app
+branch: master
+exclude_dirs:
+  - tmp
+rails_env: development
+local_tarball_name: application:tgz
+deploy_to: /var/www/stretcher-app
+deploy_roles:
+  - web
+  - batch
+stretcher_path: s3://tjinjin-upload-cirlcleci/assets
+manifest_path: s3://tjinjin-upload-cirlcleci/manifests
+stretcher_hook: stretcher2.yml.erb
+consul_host: 192.168.34.42

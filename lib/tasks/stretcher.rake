@@ -86,7 +86,7 @@ namespace :stretcher do
   end
 
   def stretcher_hook
-    cofnig['stretcher_hook']
+    config['stretcher_hook']
   end
 
   def consul_host

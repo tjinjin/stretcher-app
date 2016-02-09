@@ -4,7 +4,10 @@ require 'yaml'
 require 'open3'
 
 namespace :stretcher do
-  config = YAML.load_file(File.expand_path('../../tasks/stretcher.yml', __FILE__))
+
+  def config
+    config ||= YAML.load_file(File.expand_path('../../tasks/stretcher.yml', __FILE__))
+  end
 
   def local_working_path_base
     config['local_working_path_base']
@@ -83,7 +86,7 @@ namespace :stretcher do
   end
 
   def stretcher_hook
-    cofnig['stretcher_hook']
+    config['stretcher_hook']
   end
 
   def consul_host

@@ -4,9 +4,10 @@ require 'yaml'
 require 'open3'
 
 namespace :stretcher do
+  config = YAML.load_file(File.expand_path('../../tasks/stretcher.yml', __FILE__))
 
   def local_working_path_base
-    '/var/tmp/application'
+    config['local_working_path_base']
   end
 
   def local_repo_path
@@ -26,7 +27,7 @@ namespace :stretcher do
   end
 
   def repo_url
-    "https://github.com/tjinjin/stretcher-app"
+    config['repo_url']
   end
 
   def time_now
@@ -46,15 +47,19 @@ namespace :stretcher do
   end
 
   def rails_env
-    ENV['RAILS_ENV'] ||= 'development'
+    config['rails_env'] ||= ENV['RAILS_ENV']
   end
 
   def local_tarball_name
-    'application.tgz'
+    config['local_tarball_name']
+  end
+
+  def stretcher_path
+    config['stretcher_path']
   end
 
   def stretcher_src
-    "s3://tjinjin-upload-cirlcleci/assets/rails-application-#{time_now}.tgz"
+    "#{stretcher_path}/rails-application-#{time_now}.tgz"
   end
 
   def checksum
@@ -62,11 +67,11 @@ namespace :stretcher do
   end
 
   def deploy_to
-    "/var/www/stretcher-app"
+    config['deploy_to']
   end
 
   def deploy_roles
-    %w(web batch)
+    config['deploy_roles']
   end
 
   def tempfile_path
@@ -74,15 +79,15 @@ namespace :stretcher do
   end
 
   def manifest_path
-    "s3://tjinjin-upload-cirlcleci/manifests"
+    config['manifest_path']
   end
 
   def stretcher_hook
-    "stretcher2.yml.erb"
+    cofnig['stretcher_hook']
   end
 
   def consul_host
-    "192.168.34.42"
+    config['consul_host']
   end
 
   desc "Create tarball"

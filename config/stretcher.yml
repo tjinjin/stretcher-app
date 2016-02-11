@@ -3,7 +3,7 @@ repo_url: https://github.com/tjinjin/stretcher-app
 branch: master
 exclude_dirs:
   - tmp
-environemt: development
+environment: development
 tarball_name: application.tgz
 deploy_to: /var/www/stretcher-app
 deploy_roles:

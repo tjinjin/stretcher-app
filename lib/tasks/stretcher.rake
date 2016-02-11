@@ -132,26 +132,6 @@ namespace :stretcher do
     )
   end
 
-  desc "bundle install"
-  task :bundle do
-    Bundler.with_clean_env do
-      sh <<-EOC
-        bundle install \
-        --gemfile #{local_build_path}/Gemfile \
-        --deployment --path vendor/bundle -j 4 \
-        --without development test RAILS_ENV="#{rails_env}"
-      EOC
-    end
-  end
-
-  desc "assets precompile"
-  task :assets_precompile do
-    sh <<-EOC
-      cd #{local_build_path}
-      bundle exec rake assets:precompile RAILS_ENV="#{rails_env}"
-    EOC
-  end
-
   desc "create tarball"
   task :create_tarball do
     sh <<-EOC

@@ -117,7 +117,7 @@ GEM
     rake (10.5.0)
     rake-stretcher (0.1.2)
       rake (~> 10.0)
-    rake-stretcher-rails (0.1.0)
+    rake-stretcher-rails (0.1.1)
       rake-stretcher (~> 0.1.0)
     rdoc (4.2.2)
       json (~> 1.4)

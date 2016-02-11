@@ -115,7 +115,7 @@ GEM
       thor (>= 0.18.1, < 2.0)
     raindrops (0.15.0)
     rake (10.5.0)
-    rake-stretcher (0.1.1)
+    rake-stretcher (0.1.2)
       rake (~> 10.0)
     rake-stretcher-rails (0.1.0)
       rake-stretcher (~> 0.1.0)

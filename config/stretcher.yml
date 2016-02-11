@@ -4,7 +4,7 @@ branch: master
 exclude_dirs:
   - tmp
 rails_env: development
-local_tarball_name: application:tgz
+tarball_name: application.tgz
 deploy_to: /var/www/stretcher-app
 deploy_roles:
   - web

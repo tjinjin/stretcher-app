@@ -6,7 +6,7 @@ require 'open3'
 namespace :stretcher do
 
   def config
-    config ||= YAML.load_file(File.expand_path('../../tasks/stretcher.yml', __FILE__))
+    config ||= YAML.load_file(File.expand_path('../../../config/stretcher.yml', __FILE__))
   end
 
   def local_working_path_base
@@ -130,26 +130,6 @@ namespace :stretcher do
       rsync -av --delete #{exclude_dirs} \
           #{local_checkout_path}/#{time_now}/ #{local_build_path}/
     )
-  end
-
-  desc "bundle install"
-  task :bundle do
-    Bundler.with_clean_env do
-      sh <<-EOC
-        bundle install \
-        --gemfile #{local_build_path}/Gemfile \
-        --deployment --path vendor/bundle -j 4 \
-        --without development test RAILS_ENV="#{rails_env}"
-      EOC
-    end
-  end
-
-  desc "assets precompile"
-  task :assets_precompile do
-    sh <<-EOC
-      cd #{local_build_path}
-      bundle exec rake assets:precompile RAILS_ENV="#{rails_env}"
-    EOC
   end
 
   desc "create tarball"

@@ -6,7 +6,7 @@ require 'open3'
 namespace :stretcher do
 
   def config
-    config ||= YAML.load_file(File.expand_path('../../tasks/stretcher.yml', __FILE__))
+    config ||= YAML.load_file(File.expand_path('../../../config/stretcher.yml', __FILE__))
   end
 
   def local_working_path_base

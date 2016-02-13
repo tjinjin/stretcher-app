@@ -5,7 +5,7 @@ exclude_dirs:
   - tmp
 environment: development
 tarball_name: application.tgz
-deploy_to: /var/www/stretcher-app
+deploy_to: /var/www/stretcher_app
 deploy_roles:
   - web
   - batch

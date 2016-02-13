@@ -49,5 +49,7 @@ group :development do
   gem 'spring'
 end
 
-gem 'rake-stretcher'
-gem 'rake-stretcher-rails'
+group :development do
+  gem 'rake-stretcher'
+  gem 'rake-stretcher-rails'
+end

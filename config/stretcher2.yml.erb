@@ -2,11 +2,6 @@ default: &default
   pre:
     -
   post:
-    - ln -nfs <%= deploy_to %>/releases/<%= time_now %> <%= deploy_to %>/current
-    - rm -rf <%= deploy_to %>/current/log
-    - ln -nfs <%= deploy_to %>/shared/log <%= deploy_to %>/current/log
-    - mkdir -p <%= deploy_to %>/current/tmp
-    - ln -nfs <%= deploy_to %>/shared/pids <%= deploy_to %>/current/tmp/pids
   success:
     -
   failure:
@@ -14,6 +9,11 @@ default: &default
 web:
   <<: *default
   post:
+    - ln -nfs <%= deploy_to %>/releases/<%= time_now %> <%= deploy_to %>/current
+    - rm -rf <%= deploy_to %>/current/log
+    - ln -nfs <%= deploy_to %>/shared/log <%= deploy_to %>/current/log
+    - mkdir -p <%= deploy_to %>/current/tmp
+    - ln -nfs <%= deploy_to %>/shared/pids <%= deploy_to %>/current/tmp/pids
     - ln -nfs <%= deploy_to %>/shared/data <%= deploy_to %>/current/data
     - chown app. <%= deploy_to %>/current/ -R
     - systemctl reload unicorn || systemctl start unicorn
@@ -22,6 +22,11 @@ web:
 batch:
   <<: *default
   post:
+    - ln -nfs <%= deploy_to %>/releases/<%= time_now %> <%= deploy_to %>/current
+    - rm -rf <%= deploy_to %>/current/log
+    - ln -nfs <%= deploy_to %>/shared/log <%= deploy_to %>/current/log
+    - mkdir -p <%= deploy_to %>/current/tmp
+    - ln -nfs <%= deploy_to %>/shared/pids <%= deploy_to %>/current/tmp/pids
     - ln -nfs <%= deploy_to %>/shared/data <%= deploy_to %>/current/data
     - chown app. <%= deploy_to %>/current/ -R
     - systemctl reload sidekiq || systemctl start sidekiq

@@ -44,9 +44,9 @@ group :development do
   # Spring speeds up development by keeping your application running in the background. Read more: https://github.com/rails/spring
   gem 'spring'
 
+end
   gem 'rake-stretcher'
   gem 'rake-stretcher-rails'
   gem 'capistrano'
   gem 'capistrano-stretcher'
   gem 'capistrano-stretcher-rails'
-end

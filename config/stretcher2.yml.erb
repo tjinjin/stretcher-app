@@ -1,6 +1,13 @@
 default: &default
   pre:
     -
+  post:
+    -
+    - ln -nfs <%= deploy_to %>/releases/<%= time_now %> <%= deploy_to %>/current
+    - rm -rf <%= deploy_to %>/current/log
+    - ln -nfs <%= deploy_to %>/shared/log <%= deploy_to %>/current/log
+    - mkdir -p <%= deploy_to %>/current/tmp
+    - ln -nfs <%= deploy_to %>/shared/pids <%= deploy_to %>/current/tmp/pids
   success:
     -
   failure:

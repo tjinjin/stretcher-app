@@ -4,10 +4,10 @@ default: &default
   post:
   success:
     - echo 'deploy success!!' > /tmp/success
-    - /var/www/stretcher_app/current/script/register_kv.sh 0 /tmp/success
+    - <%= deploy_to %>/current/script/register_kv.sh 0 /tmp/success
   failure:
     - cat > /tmp/failure
-    - /var/www/stretcher_app/current/script/register_kv.sh 2 /tmp/failure
+    - <%= deploy_to %>/current/script/register_kv.sh 2 /tmp/failure
 web:
   <<: *default
   post:
